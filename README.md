@@ -10,6 +10,7 @@ SO THAT I can be prepared for my trip
 ### Acceptance Criteria
 
 ANYONE WANT TO GET TOGETHER TO WRITE SOME ACCEPTANCE CRITERIA?
+Feel free to write stuff
 
 ## Process Notes & Documents
 
