@@ -9,13 +9,13 @@ SO THAT I can be prepared for my trip
 
 ### Acceptance Criteria
 
-ANYONE WANT TO GET TOGETHER TO WRITE SOME ACCEPTANCE CRITERIA?
-Feel free to write stuff
-GIVEN a dashboard with search functions for flight tracking and weather
-WHEN I search for a flight
-THEN I will be presented with departure, airport, status, terminal/gate of the flight
-WHEN I search for weather of a specific city
-THEN I will be presented with a 5 day forcast of the city
+ANYONE WANT TO GET TOGETHER TO WRITE SOME ACCEPTANCE CRITERIA?  
+Feel free to write stuff  
+GIVEN a dashboard with search functions for flight tracking and weather  
+WHEN I search for a flight  
+THEN I will be presented with departure, airport, status, terminal/gate of the flight  
+WHEN I search for weather of a specific city  
+THEN I will be presented with a 5 day forcast of the city  
 
 
 ## Process Notes & Documents
