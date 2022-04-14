@@ -39,13 +39,13 @@
         <div class="w-full border-2">
             <form class="flex-column">
                 <h2>Check The Weather</h2>
-                <textarea placeholder="Minneapolis"></textarea>
-                <input id="city" type="text">
-                <button onclick="weatherSearch()" class="rounded bg-blue-500 text-white">Check The Weather</button>
+                <textarea id= "city" placeholder="Minneapolis"></textarea>
+                <button onclick="weatherSearch(event)" class="rounded bg-blue-500 text-white">Check The Weather</button>
             </form>
             <div>
                 <h3>Your Destination Weather</h3>
                 <!-- API data goes here -->
+                <div id="display"></div>
             </div>
 
         </div>

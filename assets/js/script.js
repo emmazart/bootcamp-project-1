@@ -63,9 +63,20 @@ fetch(flightApiUrl)
 
 
 //button weathersearch function//
- 
-function weatherSearch() {
+var APIKey = "dc591a53f8e7a96b2703399147c86ba9"
+let dailyWeather;
+
+
+function weatherDisplay() {
+    
+}
+
+
+
+function weatherSearch(event) {
+    event.preventDefault();
     var cityName = document.getElementById("city").value
+    console.log(cityName);
     var latLongAPI = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityName + "&appid=" + APIKey;
     fetch(latLongAPI).then(function(response){
         if (response.ok){
@@ -86,4 +97,4 @@ function weatherSearch() {
             });
         }
     })
-}
+};
