@@ -66,6 +66,24 @@ fetch(flightApiUrl)
  
 function weatherSearch() {
     var cityName = document.getElementById("city").value
-    var latLong = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityName + "&appid=" + APIKey;
-
+    var latLongAPI = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityName + "&appid=" + APIKey;
+    fetch(latLongAPI).then(function(response){
+        if (response.ok){
+            response.json().then(function(data) {
+                const lat = data [0].lat;
+                const lon = data [0].lon;
+                const weatherAPI = "https://api.openweathermap.org/data/2.5/onecall?lat="+ lat +"&lon=" + lon +"&exclude=minutely,hourly&appid="+ APIKey + "&units=imperial";
+                console.log(data);
+                fetch(weatherAPI).then(function(response) {
+                    if (response.ok) {
+                        response.json().then(function(data) {
+                            dailyWeather = data.daily;
+                            weatherDisplay();
+                            console.log(data);
+                        });
+                    }
+                })
+            });
+        }
+    })
 }
