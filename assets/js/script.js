@@ -56,3 +56,16 @@ fetch(flightApiUrl)
     })
 
 // https://www.addictivetips.com/web/aviationstack-api-review/
+
+
+//weather stack//
+
+
+
+//button weathersearch function//
+ 
+function weatherSearch() {
+    var cityName = document.getElementById("city").value
+    var latLong = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityName + "&appid=" + APIKey;
+
+}
