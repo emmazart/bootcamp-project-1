@@ -68,7 +68,19 @@ let dailyWeather;
 
 
 function weatherDisplay() {
-    
+    const displayWeather = document.getElementById("display");
+     for (i=0; i< 5; i++) {
+         const dw = dailyWeather[i];
+         //icon?//
+         const el = document.createElement("div");
+            var date = new Date(dw.dt*1000);
+             var temp = dw.temp.day + "deg F";
+             var wind = "Wind:" + dw.wind_speed + "MPH";
+             var humidity = "Humidity:" + dw.humidity + %;
+        el.innerText = date + "\n" + temp + "\n" + wind + "\n" + humidity;
+       
+        
+     }
 }
 
 
