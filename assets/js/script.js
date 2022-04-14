@@ -76,11 +76,11 @@ function weatherDisplay() {
             var date = new Date(dw.dt*1000);
              var temp = dw.temp.day + "deg F";
              var wind = "Wind:" + dw.wind_speed + "MPH";
-             var humidity = "Humidity:" + dw.humidity + %;
+             var humidity = "Humidity:" + dw.humidity + "%";
         el.innerText = date + "\n" + temp + "\n" + wind + "\n" + humidity;
        
-        
-     }
+        displayWeather.appendChild(el);
+    };
 }
 
 
@@ -88,7 +88,6 @@ function weatherDisplay() {
 function weatherSearch(event) {
     event.preventDefault();
     var cityName = document.getElementById("city").value
-    console.log(cityName);
     var latLongAPI = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityName + "&appid=" + APIKey;
     fetch(latLongAPI).then(function(response){
         if (response.ok){
