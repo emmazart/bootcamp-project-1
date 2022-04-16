@@ -77,7 +77,7 @@
 
         <!-- weather api -->
         <div class="w-full border-2">
-            <form class="flex-column flex-col">
+            <form id="weather-form" class="flex-column flex-col">
                 <h2 class="text-xl text-center">Enter Your Destination City</h2>
                 <textarea id="city" placeholder="Minneapolis"
                 class="
@@ -98,7 +98,7 @@
                 resize-none
                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                 ></textarea>
-                <button onclick="weatherSearch(event)" class="w-full rounded bg-sky-500 text-white">Check The Weather</button>
+                <button id="weather-button" class="w-full rounded bg-sky-500 text-white">Check The Weather</button>
             </form>
             <div class="">
                 <h3 id="city-name" class="text-center text-xl mt-2"></h3>

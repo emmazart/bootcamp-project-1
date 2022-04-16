@@ -3,7 +3,11 @@ console.log("script is working");
 // ---------- DECLARE GLOBAL VARIALBES ---------- //
 
 var flightDataArr = [];
+
 var weatherHeader = document.querySelector("#city-name");
+var weatherBtn = document.querySelector("#weather-button");
+var weatherForm = document.querySelector("#weather-form");
+var weatherInput = document.querySelector("#city");
 
 
 // ---------- FETCH CALL FOR AVIATION STACK API ---------- //
@@ -92,9 +96,7 @@ function weatherDisplay() {
 
 
 
-function weatherSearch(event) {
-    event.preventDefault();
-    var cityName = document.getElementById("city").value
+function weatherSearch(cityName) {
 
     // format user input to capitalize first letter
     var input = cityName.charAt(0).toUpperCase() + cityName.slice(1)
@@ -122,3 +124,13 @@ function weatherSearch(event) {
     })
 
 };
+
+weatherForm.addEventListener("submit", function(event){
+    event.preventDefault();
+
+    var cityName = weatherInput.value
+    weatherSearch(cityName);
+
+    weatherInput.value = "";
+});
+
