@@ -8,57 +8,75 @@ var weatherHeader = document.querySelector("#city-name");
 var weatherBtn = document.querySelector("#weather-button");
 var weatherForm = document.querySelector("#weather-form");
 var weatherInput = document.querySelector("#city");
+var aviationForm = document.querySelector("#aviation-form");
+var aviationInput = document.querySelector("#aviation-input");
 
 
 // ---------- FETCH CALL FOR AVIATION STACK API ---------- //
 
-// var flightApiUrl = "http://api.aviationstack.com/v1/flights?access_key=375139405fb38d47064313331615db30&flight_iata=UA2462";
+var flightSearch = function(flightInput) {
 
-// fetch(flightApiUrl)
-//     .then(function(response) {
-//         return response.json();
-//     })
-//     // declare variables for returned api data
-//     .then(function(data) {
-//         var flightData = data.data[0];
-//         var status = flightData.flight_status;
-//         var airport = flightData.departure.airport;
-//         var terminal = flightData.departure.terminal;
-//         var gate = flightData.departure.gate;
+var flightApiUrl = "http://api.aviationstack.com/v1/flights?access_key=efa78e00290b9cfa56fe3335158ce24d&flight_iata=" + flightInput;
 
-//         var statusObj = {
-//             title: "Current Status: ",
-//             data: status
-//         };
+fetch(flightApiUrl)
+    .then(function(response) {
+        return response.json();
+    })
+    // declare variables for returned api data
+    .then(function(data) {
+        var flightData = data.data[0];
+        var status = flightData.flight_status;
+        var airport = flightData.departure.airport;
+        var terminal = flightData.departure.terminal;
+        var gate = flightData.departure.gate;
 
-//         var airportObj = {
-//             title: "Airport: ",
-//             data: airport
-//         };
+        var statusObj = {
+            title: "Current Status: ",
+            data: status
+        };
 
-//         var terminalObj = {
-//             title: "Terminal # ",
-//             data: terminal
-//         };
+        var airportObj = {
+            title: "Airport: ",
+            data: airport
+        };
 
-//         var gateObj = {
-//             title: "Gate # ",
-//             data: gate
-//         };
+        var terminalObj = {
+            title: "Terminal # ",
+            data: terminal
+        };
 
-//         flightDataArr.push(airportObj, terminalObj, gateObj, statusObj);
-//     })
-//     .then(function(){
-//         var flightList = document.querySelector("#flight-list");
+        var gateObj = {
+            title: "Gate # ",
+            data: gate
+        };
 
-//         for (var d of flightDataArr){
-//             console.log(d);
-//             var flightLi = document.createElement("li");
-//             flightLi.innerHTML = "<li>" + d.title + "<span>" + d.data + "</span></li>";
-//             flightList.appendChild(flightLi);
-//         }
+        flightDataArr.push(airportObj, terminalObj, gateObj, statusObj);
+    })
+    .then(function(){
+        var flightList = document.querySelector("#flight-list");
 
-//     })
+        for (var d of flightDataArr){
+            console.log(d);
+            var flightLi = document.createElement("li");
+            flightLi.innerHTML = "<li>" + d.title + "<span>" + d.data + "</span></li>";
+            flightList.appendChild(flightLi);
+        }
+
+    })
+}
+
+
+    aviationForm.addEventListener("submit", function(event){
+        event.preventDefault();
+
+        
+    
+        var flightInput = aviationInput.value;
+        flightSearch(flightInput);
+    
+        aviationInput.value = "";
+    });
+
 
 // https://www.addictivetips.com/web/aviationstack-api-review/
 
