@@ -78,6 +78,8 @@ fetch(flightApiUrl)
     })
 }
 
+var lsFlight = localStorage.getItem("flight");
+flightSearch(lsFlight);
 
 aviationForm.addEventListener("submit", function(event){
         event.preventDefault();
@@ -85,6 +87,7 @@ aviationForm.addEventListener("submit", function(event){
         flightList.innerHTML = "";
 
         var flightInput = aviationInput.value;
+        localStorage.setItem("flight", flightInput);
         flightSearch(flightInput);
     
         aviationInput.value = "";
@@ -155,14 +158,22 @@ function weatherSearch(cityName) {
 
 };
 
+var lsWeather = localStorage.getItem("city");
+weatherSearch(lsWeather);
+
 weatherForm.addEventListener("submit", function(event){
     event.preventDefault();
 
     displayWeather.innerHTML = "";
 
     var cityName = weatherInput.value
+    localStorage.setItem("city", cityName);
     weatherSearch(cityName);
 
     weatherInput.value = "";
 });
 
+// need to take user inputs for flight and weather location
+// check to see if local storage already contains user values
+// if local storage contains user input, display that input
+// if local storage is empty set user inputs into local storage
