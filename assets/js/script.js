@@ -8,8 +8,11 @@ var weatherHeader = document.querySelector("#city-name");
 var weatherBtn = document.querySelector("#weather-button");
 var weatherForm = document.querySelector("#weather-form");
 var weatherInput = document.querySelector("#city");
+var displayWeather = document.getElementById("display");
+
 var aviationForm = document.querySelector("#aviation-form");
 var aviationInput = document.querySelector("#aviation-input");
+var flightList = document.querySelector("#flight-list");
 
 
 // ---------- FETCH CALL FOR AVIATION STACK API ---------- //
@@ -25,6 +28,7 @@ fetch(flightApiUrl)
     // declare variables for returned api data
     .then(function(data) {
         var flightData = data.data[0];
+        console.log(flightData);
         var status = flightData.flight_status;
         var airport = flightData.departure.airport;
         var terminal = flightData.departure.terminal;
@@ -40,20 +44,29 @@ fetch(flightApiUrl)
             data: airport
         };
 
-        var terminalObj = {
-            title: "Terminal # ",
-            data: terminal
-        };
-
         var gateObj = {
             title: "Gate # ",
             data: gate
         };
 
-        flightDataArr.push(airportObj, terminalObj, gateObj, statusObj);
+        flightDataArr = [];
+        flightDataArr.push(airportObj);
+
+        if (terminal !== null) {
+            var terminalObj = {
+                title: "Terminal # ",
+                data: terminal
+            };    
+            flightDataArr.push(terminalObj);
+        } 
+        else {
+            console.log("no terminal");
+        }
+
+        flightDataArr.push(gateObj, statusObj);
+
     })
     .then(function(){
-        var flightList = document.querySelector("#flight-list");
 
         for (var d of flightDataArr){
             console.log(d);
@@ -66,16 +79,16 @@ fetch(flightApiUrl)
 }
 
 
-    aviationForm.addEventListener("submit", function(event){
+aviationForm.addEventListener("submit", function(event){
         event.preventDefault();
 
-        
-    
+        flightList.innerHTML = "";
+
         var flightInput = aviationInput.value;
         flightSearch(flightInput);
     
         aviationInput.value = "";
-    });
+});
 
 
 // https://www.addictivetips.com/web/aviationstack-api-review/
@@ -91,7 +104,6 @@ let dailyWeather;
 
 
 function weatherDisplay() {
-    const displayWeather = document.getElementById("display");
      for (i=0; i < 5; i++) {
          const dw = dailyWeather[i];
          //icon?//
@@ -145,6 +157,8 @@ function weatherSearch(cityName) {
 
 weatherForm.addEventListener("submit", function(event){
     event.preventDefault();
+
+    displayWeather.innerHTML = "";
 
     var cityName = weatherInput.value
     weatherSearch(cityName);
