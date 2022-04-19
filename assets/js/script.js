@@ -23,7 +23,9 @@ var flightApiUrl = "http://api.aviationstack.com/v1/flights?access_key=efa78e002
 
 fetch(flightApiUrl)
     .then(function(response) {
-        return response.json();
+    console.log(response.status);
+    console.log(response.ok);
+    return response.json();
     })
     // declare variables for returned api data
     .then(function(data) {
@@ -165,4 +167,12 @@ weatherForm.addEventListener("submit", function(event){
 
     weatherInput.value = "";
 });
+
+var errorhandler = function(response) {
+    if (response.status >= 200 && response.status <= 299) {
+        return response.json();
+      } else {
+        throw Error(response.statusText);
+      }
+}
 
