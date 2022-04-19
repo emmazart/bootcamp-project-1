@@ -8,57 +8,92 @@ var weatherHeader = document.querySelector("#city-name");
 var weatherBtn = document.querySelector("#weather-button");
 var weatherForm = document.querySelector("#weather-form");
 var weatherInput = document.querySelector("#city");
+var displayWeather = document.getElementById("display");
+
+var aviationForm = document.querySelector("#aviation-form");
+var aviationInput = document.querySelector("#aviation-input");
+var flightList = document.querySelector("#flight-list");
 
 
 // ---------- FETCH CALL FOR AVIATION STACK API ---------- //
 
-// var flightApiUrl = "http://api.aviationstack.com/v1/flights?access_key=375139405fb38d47064313331615db30&flight_iata=UA2462";
+var flightSearch = function(flightInput) {
+    var flightApiUrl = "http://api.aviationstack.com/v1/flights?access_key=efa78e00290b9cfa56fe3335158ce24d&flight_iata=" + flightInput;
 
-// fetch(flightApiUrl)
-//     .then(function(response) {
-//         return response.json();
-//     })
-//     // declare variables for returned api data
-//     .then(function(data) {
-//         var flightData = data.data[0];
-//         var status = flightData.flight_status;
-//         var airport = flightData.departure.airport;
-//         var terminal = flightData.departure.terminal;
-//         var gate = flightData.departure.gate;
+    fetch(flightApiUrl)
+        .then(function(response) {
+            return response.json();
+        })
 
-//         var statusObj = {
-//             title: "Current Status: ",
-//             data: status
-//         };
+        .then(function(data) {
 
-//         var airportObj = {
-//             title: "Airport: ",
-//             data: airport
-//         };
+            // declare variables for returned api data
+            var flightData = data.data[0];
+            console.log(flightData);
+            var status = flightData.flight_status;
+            var airport = flightData.departure.airport;
+            var terminal = flightData.departure.terminal;
+            var gate = flightData.departure.gate;
 
-//         var terminalObj = {
-//             title: "Terminal # ",
-//             data: terminal
-//         };
+            var statusObj = {
+                title: "Current Status: ",
+                data: status
+            };
 
-//         var gateObj = {
-//             title: "Gate # ",
-//             data: gate
-//         };
+            var airportObj = {
+                title: "Airport: ",
+                data: airport
+            };
 
-//         flightDataArr.push(airportObj, terminalObj, gateObj, statusObj);
-//     })
-//     .then(function(){
-//         var flightList = document.querySelector("#flight-list");
+            var gateObj = {
+                title: "Gate # ",
+                data: gate
+            };
 
-//         for (var d of flightDataArr){
-//             console.log(d);
-//             var flightLi = document.createElement("li");
-//             flightLi.innerHTML = "<li>" + d.title + "<span>" + d.data + "</span></li>";
-//             flightList.appendChild(flightLi);
-//         }
+            flightDataArr = [];
+            flightDataArr.push(airportObj);
 
-//     })
+            if (terminal !== null) {
+                var terminalObj = {
+                    title: "Terminal # ",
+                    data: terminal
+                };    
+                flightDataArr.push(terminalObj);
+            } 
+            else {
+                console.log("no terminal");
+            }
+
+            flightDataArr.push(gateObj, statusObj);
+
+        })
+        .then(function(){
+
+            for (var d of flightDataArr){
+                console.log(d);
+                var flightLi = document.createElement("li");
+                flightLi.innerHTML = "<li>" + d.title + "<span>" + d.data + "</span></li>";
+                flightList.appendChild(flightLi);
+            }
+
+        })
+}
+
+// var lsFlight = localStorage.getItem("flight");
+// flightSearch(lsFlight);
+
+aviationForm.addEventListener("submit", function(event){
+        event.preventDefault();
+
+        flightList.innerHTML = "";
+
+        var flightInput = aviationInput.value;
+        localStorage.setItem("flight", flightInput);
+        flightSearch(flightInput);
+    
+        aviationInput.value = "";
+});
+
 
 // https://www.addictivetips.com/web/aviationstack-api-review/
 
@@ -73,7 +108,6 @@ let dailyWeather;
 
 
 function weatherDisplay() {
-    const displayWeather = document.getElementById("display");
      for (i=0; i < 5; i++) {
          const dw = dailyWeather[i];
          //icon?//
@@ -125,12 +159,47 @@ function weatherSearch(cityName) {
 
 };
 
+// var lsWeather = localStorage.getItem("city");
+// weatherSearch(lsWeather);
+
 weatherForm.addEventListener("submit", function(event){
     event.preventDefault();
 
+    displayWeather.innerHTML = "";
+
     var cityName = weatherInput.value
+    localStorage.setItem("city", cityName);
     weatherSearch(cityName);
 
     weatherInput.value = "";
 });
 
+// need to take user inputs for flight and weather location
+// check to see if local storage already contains user values
+// if local storage contains user input, display that input
+// if local storage is empty set user inputs into local storage
+
+// ---------- LOCAL STORAGE CHECKER ---------- //
+var checkLocalStorage = function() {
+
+    // define variables to hold local storage values
+    var lsWeather = localStorage.getItem("city");
+    var lsFlight = localStorage.getItem("flight");
+
+    // if lsWeather exists, run the weatherSearch function & pass through value
+    if (lsWeather) {
+        weatherSearch(lsWeather);
+    } else {
+        console.log("city not in localstorage");
+    }
+
+    // if lsFlight exists, run the flightSearch function & pass through value
+    if (lsFlight) {
+        flightSearch(lsFlight);
+    } else {
+        console.log("flight not in localstorage")
+    }
+};
+
+// ---------- CALL LOCAL STORAGE CHECKER ON PAGE LOAD ---------- //
+checkLocalStorage();
