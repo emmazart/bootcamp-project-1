@@ -2,6 +2,7 @@
 // ---------- DECLARE GLOBAL VARIALBES ---------- //
 
 var flightDataArr = [];
+var flightAlertArr = [];
 
 var weatherHeader = document.querySelector("#city-name");
 var weatherBtn = document.querySelector("#weather-button");
@@ -29,13 +30,19 @@ var flightSearch = function(flightInput) {
             var flightData = data.data[0];
             console.log(flightData);
             var status = flightData.flight_status;
-            var scheduled = flightData.departure.scheduled;
+
+            // get and format scheduled and estimated times of departure
+            var scheduledData = new Date(flightData.departure.scheduled); 
+            var scheduled = scheduledData.getUTCHours() + ":" + scheduledData.getUTCMinutes();
             var delay = flightData.departure.delay;
-            var estimated = flightData.departure.estimated;
+            var estimatedData = new Date(flightData.departure.estimated);
+            var estimated = estimatedData.getUTCHours() + ":" + estimatedData.getUTCMinutes();
+            
             var airport = flightData.departure.airport;
             var terminal = flightData.departure.terminal;
             var gate = flightData.departure.gate;
 
+            // package all data into objects
             var statusObj = {
                 title: "Current Status: ",
                 data: status
@@ -56,9 +63,10 @@ var flightSearch = function(flightInput) {
                 data: gate
             };
 
-            flightDataArr = [];
+            flightDataArr = []; // reset flightData to empty array
             flightDataArr.push(airportObj, scheduledObj);
 
+            // if there is a terminal value, then create an object and push to array
             if (terminal !== null) {
                 var terminalObj = {
                     title: "Terminal # ",
@@ -72,8 +80,10 @@ var flightSearch = function(flightInput) {
 
             flightDataArr.push(gateObj, statusObj);
 
+            // check for flight delays
             if (delay > 0) {
 
+                // if there is a delay, package delay and estimated departure data
                 var delayObj = {
                     title: "Delayed: ",
                     data: delay + " minutes"
@@ -84,15 +94,27 @@ var flightSearch = function(flightInput) {
                     data: estimated
                 }
 
-                flightDataArr.push(delayObj, estimatedObj);
+                // push to new array for different formatting
+                flightAlertArr.push(delayObj, estimatedObj);
             }
         })
+
+        // ---------- POPULATE PAGE WITH FLIGHT DATA ---------- //
         .then(function(){
 
+            // for of loop for basic flight data
             for (var d of flightDataArr){
-                console.log(d);
                 var flightLi = document.createElement("li");
                 flightLi.innerHTML = "<li>" + d.title + "<span>" + d.data + "</span></li>";
+                flightList.classList = "py-1";
+                flightList.appendChild(flightLi);
+            }
+
+            // for of loop for alert flight data
+            for (var d of flightAlertArr){
+                var flightLi = document.createElement("li");
+                flightLi.innerHTML = "<li>" + d.title + "<span>" + d.data + "</span></li>";
+                flightLi.classList = "bg-red-500 text-white p-1";
                 flightList.appendChild(flightLi);
             }
 
@@ -106,10 +128,10 @@ aviationForm.addEventListener("submit", function(event){
         flightList.innerHTML = "";
 
         var flightInput = aviationInput.value;
-        localStorage.setItem("flight", flightInput);
+        localStorage.setItem("flight", flightInput); // set or replace localstorage
         flightSearch(flightInput);
     
-        aviationInput.value = "";
+        aviationInput.value = ""; // clear textarea input
 });
 
 // ---------- OPEN WEATHER API ---------- //
@@ -148,6 +170,7 @@ function weatherSearch(cityName) {
     weatherHeader.textContent = input;
     var latLongAPI = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityName + "&appid=" + APIKey;
 
+    // fetch call
     fetch(latLongAPI).then(function(response){
         if (response.ok){
             response.json().then(function(data) {
@@ -180,7 +203,7 @@ weatherForm.addEventListener("submit", function(event){
     localStorage.setItem("city", cityName);
     weatherSearch(cityName);
 
-    weatherInput.value = "";
+    weatherInput.value = ""; // clear textarea
 });
 
 
