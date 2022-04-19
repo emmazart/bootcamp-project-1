@@ -1,4 +1,3 @@
-console.log("script is working");
 
 // ---------- DECLARE GLOBAL VARIALBES ---------- //
 
@@ -13,7 +12,6 @@ var displayWeather = document.getElementById("display");
 var aviationForm = document.querySelector("#aviation-form");
 var aviationInput = document.querySelector("#aviation-input");
 var flightList = document.querySelector("#flight-list");
-
 
 // ---------- FETCH CALL FOR AVIATION STACK API ---------- //
 
