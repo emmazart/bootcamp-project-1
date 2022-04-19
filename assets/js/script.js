@@ -29,6 +29,9 @@ var flightSearch = function(flightInput) {
             var flightData = data.data[0];
             console.log(flightData);
             var status = flightData.flight_status;
+            var scheduled = flightData.departure.scheduled;
+            var delay = flightData.departure.delay;
+            var estimated = flightData.departure.estimated;
             var airport = flightData.departure.airport;
             var terminal = flightData.departure.terminal;
             var gate = flightData.departure.gate;
@@ -43,13 +46,18 @@ var flightSearch = function(flightInput) {
                 data: airport
             };
 
+            var scheduledObj = {
+                title: "Scheduled Departure: ",
+                data: scheduled
+            }
+
             var gateObj = {
                 title: "Gate # ",
                 data: gate
             };
 
             flightDataArr = [];
-            flightDataArr.push(airportObj);
+            flightDataArr.push(airportObj, scheduledObj);
 
             if (terminal !== null) {
                 var terminalObj = {
@@ -64,6 +72,20 @@ var flightSearch = function(flightInput) {
 
             flightDataArr.push(gateObj, statusObj);
 
+            if (delay > 0) {
+
+                var delayObj = {
+                    title: "Delayed: ",
+                    data: delay + " minutes"
+                }    
+
+                var estimatedObj = {
+                    title: "Estimated Departure: ",
+                    data: estimated
+                }
+
+                flightDataArr.push(delayObj, estimatedObj);
+            }
         })
         .then(function(){
 
@@ -178,6 +200,7 @@ var checkLocalStorage = function() {
 
     // if lsFlight exists, run the flightSearch function & pass through value
     if (lsFlight) {
+        flightList.innerHTML = "";
         flightSearch(lsFlight);
     } else {
         console.log("flight not in localstorage")
