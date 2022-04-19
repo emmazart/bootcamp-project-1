@@ -1,4 +1,3 @@
-console.log("script is working");
 
 // ---------- DECLARE GLOBAL VARIALBES ---------- //
 
@@ -13,7 +12,6 @@ var displayWeather = document.getElementById("display");
 var aviationForm = document.querySelector("#aviation-form");
 var aviationInput = document.querySelector("#aviation-input");
 var flightList = document.querySelector("#flight-list");
-
 
 // ---------- FETCH CALL FOR AVIATION STACK API ---------- //
 
@@ -79,9 +77,7 @@ var flightSearch = function(flightInput) {
         })
 }
 
-// var lsFlight = localStorage.getItem("flight");
-// flightSearch(lsFlight);
-
+// event listener for aviation form
 aviationForm.addEventListener("submit", function(event){
         event.preventDefault();
 
@@ -94,19 +90,13 @@ aviationForm.addEventListener("submit", function(event){
         aviationInput.value = "";
 });
 
+// ---------- OPEN WEATHER API ---------- //
 
-// https://www.addictivetips.com/web/aviationstack-api-review/
-
-
-//weather stack//
-
-
-
-//button weathersearch function//
+// ---------- variables for open weather fetch call ---------- //
 var APIKey = "dc591a53f8e7a96b2703399147c86ba9"
 let dailyWeather;
 
-
+// ---------- DEFINE WEATHER DISPLAY FUNCTION TO PRINT DATA TO PAGE ---------- //
 function weatherDisplay() {
      for (i=0; i < 5; i++) {
          const dw = dailyWeather[i];
@@ -128,8 +118,7 @@ function weatherDisplay() {
     };
 }
 
-
-
+// ---------- WEATHER SEARCH API CALL ---------- //
 function weatherSearch(cityName) {
 
     // format user input to capitalize first letter
@@ -159,9 +148,7 @@ function weatherSearch(cityName) {
 
 };
 
-// var lsWeather = localStorage.getItem("city");
-// weatherSearch(lsWeather);
-
+// event listener for weather form
 weatherForm.addEventListener("submit", function(event){
     event.preventDefault();
 
@@ -174,10 +161,6 @@ weatherForm.addEventListener("submit", function(event){
     weatherInput.value = "";
 });
 
-// need to take user inputs for flight and weather location
-// check to see if local storage already contains user values
-// if local storage contains user input, display that input
-// if local storage is empty set user inputs into local storage
 
 // ---------- LOCAL STORAGE CHECKER ---------- //
 var checkLocalStorage = function() {
