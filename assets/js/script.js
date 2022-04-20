@@ -9,6 +9,7 @@ var weatherBtn = document.querySelector("#weather-button");
 var weatherForm = document.querySelector("#weather-form");
 var weatherInput = document.querySelector("#city");
 var displayWeather = document.getElementById("display");
+var airportHeader = document.querySelector("#airport-header");
 
 var aviationForm = document.querySelector("#aviation-form");
 var aviationInput = document.querySelector("#aviation-input");
@@ -17,7 +18,7 @@ var flightList = document.querySelector("#flight-list");
 // ---------- FETCH CALL FOR AVIATION STACK API ---------- //
 
 var flightSearch = function(flightInput) {
-    var flightApiUrl = "http://api.aviationstack.com/v1/flights?access_key=efa78e00290b9cfa56fe3335158ce24d&flight_iata=" + flightInput;
+    var flightApiUrl = "http://api.aviationstack.com/v1/flights?access_key=416dac2af7095a7ba99f1ed78f5d54d8&flight_iata=" + flightInput;
 
     fetch(flightApiUrl)
         .then(function(response) {
@@ -41,6 +42,8 @@ var flightSearch = function(flightInput) {
             var airport = flightData.departure.airport;
             var terminal = flightData.departure.terminal;
             var gate = flightData.departure.gate;
+
+            airportHeader.innerHTML = `Flight # ${flightInput}`;
 
             // package all data into objects
             var statusObj = {
