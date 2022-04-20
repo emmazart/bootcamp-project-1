@@ -15,9 +15,9 @@
 
     <main class="p-4 m-2 flex columns-2">
         <!-- flight tracking container -->
-        <div class="flex-column flex-col w-full border-2 mx-2">
-            <form id="aviation-form">
-                <h2 class="text-xl text-center">Enter Your Flight Number</h2>
+        <div class="flex-column flex-col w-full">
+            <form id="aviation-form" class="mx-2">
+                <h2 class="text-xl text-center p-2 mb-2">Enter Your Flight Number</h2>
                 <textarea id="aviation-input" placeholder="UA1234" 
                 class="
                 form-control
@@ -75,9 +75,9 @@
         </div>
 
         <!-- weather api -->
-        <div class="w-full border-2">
+        <div class="w-full">
             <form id="weather-form" class="flex-column flex-col">
-                <h2 class="text-xl text-center">Enter Your Destination City</h2>
+                <h2 class="text-xl text-center p-2 mb-2">Enter Your Destination City</h2>
                 <textarea id="city" placeholder="Minneapolis"
                 class="
                 form-control
@@ -99,7 +99,7 @@
                 ></textarea>
                 <button id="weather-button" class="w-full rounded bg-sky-500 text-white">Check The Weather</button>
             </form>
-            <div class="bg-gradient-to-r from-sky-500 via-yellow-100 to-yellow-400 p-2 mt-9 mx-3 mb-3 rounded">
+            <div class="bg-gradient-to-r from-sky-500 via-yellow-100 to-yellow-400 p-2 mt-9 mx-3 mb-3 rounded" style="height: 494px">
                 <h3 id="city-name" class="text-center text-xl mt-2"></h3>
                 <!-- API data goes here -->
                 <div id="display"></div>
@@ -109,8 +109,8 @@
 
     </main>
     
-    <footer>
-        <p>&copy Created by team 6</p>
+    <footer class="p-4">
+        <p>&copy Created by Team 6</p>
     </footer>
     <script src="./assets/js/script.js"></script>
 </body>
