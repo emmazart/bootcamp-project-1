@@ -17,7 +17,7 @@ var flightList = document.querySelector("#flight-list");
 // ---------- FETCH CALL FOR AVIATION STACK API ---------- //
 
 var flightSearch = function(flightInput) {
-    var flightApiUrl = "http://api.aviationstack.com/v1/flights?access_key=efa78e00290b9cfa56fe3335158ce24d&flight_iata=" + flightInput;
+    var flightApiUrl = "http://api.aviationstack.com/v1/flights?access_key=2796b40407c851651a91def1ed285299&flight_iata=" + flightInput;
 
     fetch(flightApiUrl)
         .then(function(response) {
