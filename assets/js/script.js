@@ -1,6 +1,7 @@
 // ---------- DECLARE GLOBAL VARIALBES ---------- //
 
 var flightDataArr = [];
+var flightAlertArr = [];
 
 var weatherHeader = document.querySelector("#city-name");
 var weatherBtn = document.querySelector("#weather-button");
@@ -34,46 +35,106 @@ var flightSearch = function (flightInput) {
 
       airportHeader.innerHTML = `Flight # ${flightData.flight.icao}`;  
         
-      var statusObj = {
-        title: "Current Status: ",
-        data: status,
-      };
+      
+            // declare variables for returned api data
+            var flightData = data.data[0];
+            console.log(flightData);
+            var status = flightData.flight_status;
 
-      var airportObj = {
-        title: "Airport: ",
-        data: airport,
-      };
+            // get and format scheduled and estimated times of departure
+            var scheduledData = new Date(flightData.departure.scheduled); 
+            var scheduled = scheduledData.getUTCHours() + ":" + scheduledData.getUTCMinutes();
+            var delay = flightData.departure.delay;
+            var estimatedData = new Date(flightData.departure.estimated);
+            var estimated = estimatedData.getUTCHours() + ":" + estimatedData.getUTCMinutes();
+            
+            var airport = flightData.departure.airport;
+            var terminal = flightData.departure.terminal;
+            var gate = flightData.departure.gate;
 
-      var gateObj = {
-        title: "Gate # ",
-        data: gate,
-      };
+            // package all data into objects
+            var statusObj = {
+                title: "Current Status: ",
+                data: status
+            };
 
-      flightDataArr = [];
-      flightDataArr.push(airportObj);
+                 var scheduledObj = {
+                title: "Scheduled Departure: ",
+                data: scheduled
+            }
 
-      if (terminal !== null) {
-        var terminalObj = {
-          title: "Terminal # ",
-          data: terminal,
-        };
-        flightDataArr.push(terminalObj);
-      } else {
-        console.log("no terminal");
-      }
+            var gateObj = {
+                title: "Gate # ",
+                data: gate
+            };
+            
+            var statusObj = {
+                title: "Current Status: ",
+                data: status,
+              };
+        
+              var airportObj = {
+                title: "Airport: ",
+                data: airport,
+              };
 
-      flightDataArr.push(gateObj, statusObj);
-    })
-    .then(function () {
-      for (var d of flightDataArr) {
-        console.log(d);
-        var flightLi = document.createElement("li");
-        flightLi.innerHTML =
-          "<li>" + d.title + "<span>" + d.data + "</span></li>";
-        flightList.appendChild(flightLi);
-      }
-    });
-};
+            flightDataArr = []; // reset flightData to empty array
+            flightDataArr.push(airportObj, scheduledObj);
+
+            // if there is a terminal value, then create an object and push to array
+            if (terminal !== null) {
+                var terminalObj = {
+                    title: "Terminal # ",
+                    data: terminal
+                };    
+                flightDataArr.push(terminalObj);
+            } 
+            else {
+                console.log("no terminal");
+            }
+
+            flightDataArr.push(gateObj, statusObj);
+
+            // check for flight delays
+            if (delay > 0) {
+
+                // if there is a delay, package delay and estimated departure data
+                var delayObj = {
+                    title: "Delayed: ",
+                    data: delay + " minutes"
+                }    
+
+                var estimatedObj = {
+                    title: "Estimated Departure: ",
+                    data: estimated
+                }
+
+                // push to new array for different formatting
+                flightAlertArr.push(delayObj, estimatedObj);
+            }
+        })
+
+        // ---------- POPULATE PAGE WITH FLIGHT DATA ---------- //
+        .then(function(){
+
+            // for of loop for basic flight data
+            for (var d of flightDataArr){
+                var flightLi = document.createElement("li");
+                flightLi.innerHTML = "<li>" + d.title + "<span>" + d.data + "</span></li>";
+                flightList.classList = "py-1";
+                flightList.appendChild(flightLi);
+            }
+
+            // for of loop for alert flight data
+            for (var d of flightAlertArr){
+                var flightLi = document.createElement("li");
+                flightLi.innerHTML = "<li>" + d.title + "<span>" + d.data + "</span></li>";
+                flightLi.classList = "bg-red-500 text-white p-1";
+                flightList.appendChild(flightLi);
+            }
+
+        })
+}
 
 // event listener for aviation form
 aviationForm.addEventListener("submit", function (event) {
@@ -81,10 +142,11 @@ aviationForm.addEventListener("submit", function (event) {
 
   flightList.innerHTML = "";
 
-  var flightInput = aviationInput.value;
-  localStorage.setItem("flight", flightInput);
-  flightSearch(flightInput);
-  aviationInput.value = "";
+        var flightInput = aviationInput.value;
+        localStorage.setItem("flight", flightInput); // set or replace localstorage
+        flightSearch(flightInput);
+    
+        aviationInput.value = ""; // clear textarea input
 });
 
 // ---------- OPEN WEATHER API ---------- //
@@ -126,26 +188,28 @@ function weatherSearch(cityName) {
     "&appid=" +
     APIKey;
 
-  fetch(latLongAPI).then(function (response) {
-    if (response.ok) {
-      response.json().then(function (data) {
-        const lat = data[0].lat;
-        const lon = data[0].lon;
-        const weatherAPI =
-          "https://api.openweathermap.org/data/2.5/onecall?lat=" +
-          lat +
-          "&lon=" +
-          lon +
-          "&exclude=minutely,hourly&appid=" +
-          APIKey +
-          "&units=imperial";
-        console.log(data);
-        fetch(weatherAPI).then(function (response) {
-          if (response.ok) {
-            response.json().then(function (data) {
-              dailyWeather = data.daily;
-              weatherDisplay();
-              console.log(data);
+    // format user input to capitalize first letter
+    var input = cityName.charAt(0).toUpperCase() + cityName.slice(1)
+    weatherHeader.textContent = input;
+    var latLongAPI = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityName + "&appid=" + APIKey;
+
+    // fetch call
+    fetch(latLongAPI).then(function(response){
+        if (response.ok){
+            response.json().then(function(data) {
+                const lat = data [0].lat;
+                const lon = data [0].lon;
+                const weatherAPI = "https://api.openweathermap.org/data/2.5/onecall?lat="+ lat +"&lon=" + lon +"&exclude=minutely,hourly&appid="+ APIKey + "&units=imperial";
+                console.log(data);
+                fetch(weatherAPI).then(function(response) {
+                    if (response.ok) {
+                        response.json().then(function(data) {
+                            dailyWeather = data.daily;
+                            weatherDisplay();
+                            console.log(data);
+                        });
+                    }
+                })
             });
           }
         });
@@ -164,7 +228,7 @@ weatherForm.addEventListener("submit", function (event) {
   localStorage.setItem("city", cityName);
   weatherSearch(cityName);
 
-  weatherInput.value = "";
+    weatherInput.value = ""; // clear textarea
 });
 
 // ---------- LOCAL STORAGE CHECKER ---------- //
@@ -180,12 +244,20 @@ var checkLocalStorage = function () {
     console.log("city not in localstorage");
   }
 
-  // if lsFlight exists, run the flightSearch function & pass through value
-  if (lsFlight) {
-    // flightSearch(lsFlight);
-  } else {
-    console.log("flight not in localstorage");
-  }
+    // if lsWeather exists, run the weatherSearch function & pass through value
+    if (lsWeather) {
+        weatherSearch(lsWeather);
+    } else {
+        console.log("city not in localstorage");
+    }
+
+    // if lsFlight exists, run the flightSearch function & pass through value
+    if (lsFlight) {
+        flightList.innerHTML = "";
+        flightSearch(lsFlight);
+    } else {
+        console.log("flight not in localstorage")
+    }
 };
 
 // ---------- CALL LOCAL STORAGE CHECKER ON PAGE LOAD ---------- //
