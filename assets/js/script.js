@@ -137,16 +137,16 @@ function weatherSearch(cityName) {
     .then((response) => {
     if (response.status >= 200 && response.status <= 299) {
         console.log(response.json());
-        // return response.json();
+        .then((data) => {
+            const lat = data[0].lat;
+            const lon = data[0].lon;
+            allWeatherApi(data[0].lat, data[0].lon);
+        })
+        return response.json();
     } else {
         throw Error(response.statusText);
     }
     })
-    .then((data) => {
-        const lat = data[0].lat;
-        const lon = data[0].lon;
-        allWeatherApi(lat, lon);
-
     //     const weatherAPI =
     //       "https://api.openweathermap.org/data/2.5/onecall?lat=" +
     //       lat +
@@ -165,8 +165,7 @@ function weatherSearch(cityName) {
     //         });
     //       }
     //     });
-      })
-    .catch((error) => {
+     .catch((error) => {
     // Handle the error
     invalidWeatherEntry(error);
     console.log(error);
