@@ -154,7 +154,7 @@ function weatherDisplay() {
 
 
         DailyEl.innerHTML = `<strong>${date}</strong> 
-            <img src="http://openweathermap.org/img/wn/${icon}.png">
+            <img src="https://openweathermap.org/img/wn/${icon}.png">
             ${temp} </br> ${wind} </br> ${humidity}`;
         DailyEl.classList = "flex justify-evenly bg-blue-100 text-center rounded p-1 m-2";
 
