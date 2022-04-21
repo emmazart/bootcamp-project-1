@@ -13,74 +13,77 @@ var displayWeather = document.getElementById("display");
 var aviationForm = document.querySelector("#aviation-form");
 var aviationInput = document.querySelector("#aviation-input");
 var flightList = document.querySelector("#flight-list");
+var apiKey = "416dac2af7095a7ba99f1ed78f5d54d8";
 
 // ---------- FETCH CALL FOR AVIATION STACK API ---------- //
 
-// var flightSearch = function (flightInput) {
-//   var flightApiUrl =
-//     "http://api.aviationstack.com/v1/flights?access_key=efa78e00290b9cfa56fe3335158ce24d&flight_iata=" +
-//     flightInput;
-//   console.log(flightApiUrl);
+var flightSearch = function (flightInput) {
+  var flightApiUrl =
+    "http://api.aviationstack.com/v1/flights?access_key=" +
+    apiKey +
+    "&flight_iata=" +
+    flightInput;
+  console.log(flightApiUrl);
 
-//   fetch(flightApiUrl)
-//     .then(function (response) {
-//       console.log(response.status);
-//       console.log(response.ok);
-//       return response.json();
-//     })
-//     // declare variables for returned api data
-//     .then(function (data) {
-//         var flightData = data.data[0];
-//       if (flightData) {
-//         console.log("this is " + data.data);
-//         var status = flightData.flight_status;
-//         var airport = flightData.departure.airport;
-//         var terminal = flightData.departure.terminal;
-//         var gate = flightData.departure.gate;
-//       } else {
-//         invalidAvEntry();
-//       }
+  fetch(flightApiUrl)
+    .then(function (response) {
+      console.log(response.status);
+      console.log(response.ok);
+      return response.json();
+    })
+    // declare variables for returned api data
+    .then(function (data) {
+      var flightData = data.data[0];
+      if (flightData) {
+        console.log("this is " + data.data[0]);
+        var status = flightData.flight_status;
+        var airport = flightData.departure.airport;
+        var terminal = flightData.departure.terminal;
+        var gate = flightData.departure.gate;
+      } else {
+        invalidAvEntry();
+      }
 
-//       var statusObj = {
-//         title: "Current Status: ",
-//         data: status,
-//       };
+      var statusObj = {
+        title: "Current Status: ",
+        data: status,
+      };
 
-//       var airportObj = {
-//         title: "Airport: ",
-//         data: airport,
-//       };
+      var airportObj = {
+        title: "Airport: ",
+        data: airport,
+      };
 
-//       var gateObj = {
-//         title: "Gate # ",
-//         data: gate,
-//       };
+      var gateObj = {
+        title: "Gate # ",
+        data: gate,
+      };
 
-//       flightDataArr = [];
-//       flightDataArr.push(airportObj);
+      flightDataArr = [];
+      flightDataArr.push(airportObj);
 
-//       if (terminal !== null) {
-//         var terminalObj = {
-//           title: "Terminal # ",
-//           data: terminal,
-//         };
-//         flightDataArr.push(terminalObj);
-//       } else {
-//         console.log("no terminal");
-//       }
+      if (terminal !== null) {
+        var terminalObj = {
+          title: "Terminal # ",
+          data: terminal,
+        };
+        flightDataArr.push(terminalObj);
+      } else {
+        console.log("no terminal");
+      }
 
-//       flightDataArr.push(gateObj, statusObj);
-//     })
-//     .then(function () {
-//       for (var d of flightDataArr) {
-//         console.log(d);
-//         var flightLi = document.createElement("li");
-//         flightLi.innerHTML =
-//           "<li>" + d.title + "<span>" + d.data + "</span></li>";
-//         flightList.appendChild(flightLi);
-//       }
-//     });
-// };
+      flightDataArr.push(gateObj, statusObj);
+    })
+    .then(function () {
+      for (var d of flightDataArr) {
+        console.log(d);
+        var flightLi = document.createElement("li");
+        flightLi.innerHTML =
+          "<li>" + d.title + "<span>" + d.data + "</span></li>";
+        flightList.appendChild(flightLi);
+      }
+    });
+};
 
 aviationForm.addEventListener("submit", function (event) {
   event.preventDefault();
@@ -88,7 +91,11 @@ aviationForm.addEventListener("submit", function (event) {
   flightList.innerHTML = "";
 
   var flightInput = aviationInput.value;
-  //   flightSearch(flightInput);
+  if (flightInput === "") {
+    invalidAvEntry();
+  } else {
+    flightSearch(flightInput);
+  }
 
   aviationInput.value = "";
 });
@@ -133,63 +140,54 @@ function weatherSearch(cityName) {
     "&appid=" +
     APIKey;
 
+  //   fetch(latLongAPI)
+  //     .then((response) => {
+  //     if (response.status >= 200 && response.status <= 299) {
+  //         console.log(response.json());
+  //         then((data) => {
+  //             const lat = data[0].lat;
+  //             const lon = data[0].lon;
+  //             allWeatherApi(data[0].lat, data[0].lon);
+  //         })
   fetch(latLongAPI)
     .then((response) => {
-    if (response.status >= 200 && response.status <= 299) {
-        console.log(response.json());
-        .then((data) => {
-            const lat = data[0].lat;
-            const lon = data[0].lon;
-            allWeatherApi(data[0].lat, data[0].lon);
-        })
+      if (response.status >= 200 && response.status <= 299) {
         return response.json();
-    } else {
+      } else {
         throw Error(response.statusText);
-    }
+      }
     })
-    //     const weatherAPI =
-    //       "https://api.openweathermap.org/data/2.5/onecall?lat=" +
-    //       lat +
-    //       "&lon=" +
-    //       lon +
-    //       "&exclude=minutely,hourly&appid=" +
-    //       APIKey +
-    //       "&units=imperial";
-    //     console.log(data);
-    // fetch(weatherAPI).then(function (response) {
-    //       if (response.ok) {
-    //         response.json().then(function (data) {
-    //           dailyWeather = data.daily;
-    //           weatherDisplay();
-    //           console.log(data);
-    //         });
-    //       }
-    //     });
-     .catch((error) => {
-    // Handle the error
-    invalidWeatherEntry(error);
-    console.log(error);
+    .then((data) => {
+      const lat = data[0].lat;
+      const lon = data[0].lon;
+      allWeatherApi(lat, lon);
+    })
+    .catch((error) => {
+      // Handle the error
+      invalidWeatherEntry();
+      console.log(error);
     });
-var allWeatherApi = function(lat, lon) {
-    const weatherAPI =
-          "https://api.openweathermap.org/data/2.5/onecall?lat=" +
-          lat +
-          "&lon=" +
-          lon +
-          "&exclude=minutely,hourly&appid=" +
-          APIKey +
-          "&units=imperial";
-        console.log(data);
-    fetch(weatherAPI).then(function (response) {
-          if (response.ok) {
-            response.json().then(function (data) {
-              dailyWeather = data.daily;
-              weatherDisplay();
-              console.log(data);
-            });
-          }
-        });
 }
+var allWeatherApi = function (lat, lon) {
+  const weatherAPI =
+    "https://api.openweathermap.org/data/2.5/onecall?lat=" +
+    lat +
+    "&lon=" +
+    lon +
+    "&exclude=minutely,hourly&appid=" +
+    APIKey +
+    "&units=imperial";
+//   console.log(data);
+  fetch(weatherAPI).then(function (response) {
+    if (response.ok) {
+      response.json().then(function (data) {
+        dailyWeather = data.daily;
+        weatherDisplay();
+        console.log(data);
+      });
+    }
+  });
+};
 
 weatherForm.addEventListener("submit", function (event) {
   event.preventDefault();
@@ -201,7 +199,6 @@ weatherForm.addEventListener("submit", function (event) {
 
   weatherInput.value = "";
 });
-};
 //When the flightData returns empty.
 //This the result of a bad entry in the aviation text field
 
@@ -211,14 +208,14 @@ var invalidAvEntry = function () {
   invalidEntry.textContent = "Please Enter a Valid Flight Number!!";
   formEl.replaceWith(invalidEntry);
 };
-var invalidWeatherEntry = function (error) {
-    console.log(error);
+var invalidWeatherEntry = function () {
+  // console.log(error);
   let formEl = document.getElementById("weather-header");
   let invalidEntry = document.createElement("h2");
   invalidEntry.textContent = "Please Enter a Valid City!!";
   formEl.replaceWith(invalidEntry);
 };
-invalidAvEntry();
+// invalidAvEntry();
 
 // var errorHandler = function () {
 //   if (response.status >= 200 && response.status <= 299) {
