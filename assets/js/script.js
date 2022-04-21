@@ -88,7 +88,9 @@ var flightSearch = function (flightInput) {
 
 aviationForm.addEventListener("submit", function (event) {
   event.preventDefault();
-
+  let formEl = document.getElementById("aviation-header");
+  formEl.classList = "text-xl text-center";
+  formEl.textContent = "Enter Your Fight Number";
   flightList.innerHTML = "";
 
   var flightInput = aviationInput.value;
@@ -186,7 +188,9 @@ var allWeatherApi = function (lat, lon) {
 // event listener for weather form
 weatherForm.addEventListener("submit", function(event){
     event.preventDefault();
-
+    let formEl = document.getElementById("weather-header");
+    formEl.classList = "text-xl text-center";
+    formEl.textContent = "Enter Your Destination City";
   displayWeather.innerHTML = "";
 
     var cityName = weatherInput.value
@@ -200,11 +204,13 @@ weatherForm.addEventListener("submit", function(event){
 
 var invalidAvEntry = function () {
   let formEl = document.getElementById("aviation-header");
+  formEl.classList = "bg-red-200 text-2xl text-center";
   formEl.textContent = "Please Enter a Valid Fight Number!!";
 };
 var invalidWeatherEntry = function () {
   // console.log(error);
   let formEl = document.getElementById("weather-header");
+  formEl.classList = "bg-red-200 text-2xl text-center";
   formEl.textContent = "Please Enter a Valid City!!";
 };
 
