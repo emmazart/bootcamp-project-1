@@ -17,7 +17,7 @@ var flightList = document.querySelector("#flight-list");
 // ---------- FETCH CALL FOR AVIATION STACK API ---------- //
 
 var flightSearch = function(flightInput) {
-    var flightApiUrl = "http://api.aviationstack.com/v1/flights?access_key=2796b40407c851651a91def1ed285299&flight_iata=" + flightInput;
+    var flightApiUrl = "https://api.aviationstack.com/v1/flights?access_key=2796b40407c851651a91def1ed285299&flight_iata=" + flightInput;
 
     fetch(flightApiUrl)
         .then(function(response) {
@@ -168,7 +168,7 @@ function weatherSearch(cityName) {
     // format user input to capitalize first letter
     var input = cityName.charAt(0).toUpperCase() + cityName.slice(1)
     weatherHeader.textContent = input;
-    var latLongAPI = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityName + "&appid=" + APIKey;
+    var latLongAPI = "https://api.openweathermap.org/geo/1.0/direct?q=" + cityName + "&appid=" + APIKey;
 
     // fetch call
     fetch(latLongAPI).then(function(response){
