@@ -9,6 +9,7 @@ var weatherBtn = document.querySelector("#weather-button");
 var weatherForm = document.querySelector("#weather-form");
 var weatherInput = document.querySelector("#city");
 var displayWeather = document.getElementById("display");
+var airportHeader = document.querySelector("#airport-header");
 
 var aviationForm = document.querySelector("#aviation-form");
 var aviationInput = document.querySelector("#aviation-input");
@@ -17,7 +18,7 @@ var flightList = document.querySelector("#flight-list");
 // ---------- FETCH CALL FOR AVIATION STACK API ---------- //
 
 var flightSearch = function(flightInput) {
-    var flightApiUrl = "http://api.aviationstack.com/v1/flights?access_key=efa78e00290b9cfa56fe3335158ce24d&flight_iata=" + flightInput;
+    var flightApiUrl = "https://api.aviationstack.com/v1/flights?access_key=2796b40407c851651a91def1ed285299&flight_iata=" + flightInput;
 
     fetch(flightApiUrl)
         .then(function(response) {
@@ -41,6 +42,8 @@ var flightSearch = function(flightInput) {
             var airport = flightData.departure.airport;
             var terminal = flightData.departure.terminal;
             var gate = flightData.departure.gate;
+
+            airportHeader.innerHTML = `Flight # ${flightInput}`;
 
             // package all data into objects
             var statusObj = {
@@ -154,7 +157,7 @@ function weatherDisplay() {
 
 
         DailyEl.innerHTML = `<strong>${date}</strong> 
-            <img src="http://openweathermap.org/img/wn/${icon}.png">
+            <img src="https://openweathermap.org/img/wn/${icon}.png">
             ${temp} </br> ${wind} </br> ${humidity}`;
         DailyEl.classList = "flex justify-evenly bg-blue-100 text-center rounded p-1 m-2";
 
@@ -168,7 +171,7 @@ function weatherSearch(cityName) {
     // format user input to capitalize first letter
     var input = cityName.charAt(0).toUpperCase() + cityName.slice(1)
     weatherHeader.textContent = input;
-    var latLongAPI = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityName + "&appid=" + APIKey;
+    var latLongAPI = "https://api.openweathermap.org/geo/1.0/direct?q=" + cityName + "&appid=" + APIKey;
 
     // fetch call
     fetch(latLongAPI).then(function(response){
