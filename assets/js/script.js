@@ -11,10 +11,11 @@ var weatherInput = document.querySelector("#city");
 var displayWeather = document.getElementById("display");
 
 var airportHeader = document.querySelector("#airport-header");
+var flightDiv = document.querySelector("#flight-populated");
 var aviationForm = document.querySelector("#aviation-form");
 var aviationInput = document.querySelector("#aviation-input");
 var flightList = document.querySelector("#flight-list");
-var flightApiKey = "416dac2af7095a7ba99f1ed78f5d54d8";
+var flightApiKey = "ec6d6bb1f869f3011d43ed2a62fe53ae";
 
 // ---------- FETCH CALL FOR AVIATION STACK API ---------- //
 
@@ -249,6 +250,8 @@ var invalidAvEntry = function () {
   let formEl = document.getElementById("aviation-header");
   formEl.classList = "bg-red-200 text-2xl text-center";
   formEl.textContent = "Please Enter a Valid Fight Number!!";
+  // localStorage.clear();
+  // flightDiv.innerHTML = "Invalid Flight";
 };
 
 var invalidWeatherEntry = function () {
@@ -256,6 +259,7 @@ var invalidWeatherEntry = function () {
   let formEl = document.getElementById("weather-header");
   formEl.classList = "bg-red-200 text-2xl text-center";
   formEl.textContent = "Please Enter a Valid City!!";
+  // weatherHeader.textContent = "";
 };
 
 // ---------- LOCAL STORAGE CHECKER ---------- //
