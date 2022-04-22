@@ -45,6 +45,8 @@ var flightSearch = function (flightInput) {
       invalidAvEntry();
       }
 
+      airportHeader.innerHTML = `Flight # ${flightInput}`;
+
       var statusObj = {
         title: "Current Status: ",
         data: status,
