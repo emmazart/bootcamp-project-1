@@ -14,17 +14,12 @@ var airportHeader = document.querySelector("#airport-header");
 var aviationForm = document.querySelector("#aviation-form");
 var aviationInput = document.querySelector("#aviation-input");
 var flightList = document.querySelector("#flight-list");
-var apiKey = "416dac2af7095a7ba99f1ed78f5d54d8";
+var flightApiKey = "416dac2af7095a7ba99f1ed78f5d54d8";
 
 // ---------- FETCH CALL FOR AVIATION STACK API ---------- //
 
 var flightSearch = function (flightInput) {
-  var flightApiUrl =
-    "http://api.aviationstack.com/v1/flights?access_key=" +
-    apiKey +
-    "&flight_iata=" +
-    flightInput;
-  console.log(flightApiUrl);
+  var flightApiUrl = "http://api.aviationstack.com/v1/flights?access_key=" + flightApiKey + "&flight_iata=" + flightInput;
 
   fetch(flightApiUrl)
     .then(function (response) {
@@ -32,10 +27,12 @@ var flightSearch = function (flightInput) {
       console.log(response.ok);
       return response.json();
     })
-    // declare variables for returned api data
+
     .then(function (data) {
       var flightData = data.data[0];
+      // if flightData exists
       if (flightData) {
+        // declare variables for returned api data
         console.log("this is " + flightData);
         var status = flightData.flight_status;
         var airport = flightData.departure.airport;
@@ -45,8 +42,10 @@ var flightSearch = function (flightInput) {
       invalidAvEntry();
       }
 
+      // dynamically update header to include flight input
       airportHeader.innerHTML = `Flight # ${flightInput}`;
 
+      // package flight data as objects
       var statusObj = {
         title: "Current Status: ",
         data: status,
@@ -65,6 +64,7 @@ var flightSearch = function (flightInput) {
       flightDataArr = [];
       flightDataArr.push(airportObj);
 
+      // check if terminal data exists
       if (terminal !== null) {
         var terminalObj = {
           title: "Terminal # ",
@@ -77,6 +77,7 @@ var flightSearch = function (flightInput) {
 
       flightDataArr.push(gateObj, statusObj);
     })
+    
     .then(function () {
       for (var d of flightDataArr) {
         console.log(d);
