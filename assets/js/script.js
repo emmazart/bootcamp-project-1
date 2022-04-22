@@ -23,13 +23,12 @@ var flightSearch = function (flightInput) {
 
   fetch(flightApiUrl)
     .then(function (response) {
-      console.log(response.status);
-      console.log(response.ok);
       return response.json();
     })
 
     .then(function (data) {
       var flightData = data.data[0];
+
       // if flightData exists
       if (flightData) {
         // declare variables for returned api data
@@ -47,7 +46,7 @@ var flightSearch = function (flightInput) {
         var estimated = estimatedData.getUTCHours() + ":" + estimatedData.getUTCMinutes();
 
       } else {
-      invalidAvEntry();
+      return invalidAvEntry();
       }
 
       // dynamically update header to include flight input
@@ -77,7 +76,7 @@ var flightSearch = function (flightInput) {
       flightDataArr = []; // reset flightData to empty array
       flightDataArr.push(airportObj, scheduledObj);
 
-      // check if terminal data exists
+      // if there is a terminal value, then create an object and push to array
       if (terminal !== null) {
         var terminalObj = {
           title: "Terminal # ",
@@ -105,7 +104,7 @@ var flightSearch = function (flightInput) {
       // push to new array for different formatting
       flightAlertArr.push(delayObj, estimatedObj);
     }
-  })
+    })
 
 
     // ---------- POPULATE PAGE WITH FLIGHT DATA ---------- //
@@ -130,36 +129,39 @@ var flightSearch = function (flightInput) {
     });
 };
 
+// event listener for aviation form
 aviationForm.addEventListener("submit", function (event) {
   event.preventDefault();
+
+  // reset form header if necessary
   let formEl = document.getElementById("aviation-header");
   formEl.classList = "text-xl text-center";
   formEl.textContent = "Enter Your Fight Number";
-  flightList.innerHTML = "";
 
+  flightList.innerHTML = ""; 
+
+  // validate flight input
   var flightInput = aviationInput.value;
   if (flightInput === "") {
     invalidAvEntry();
   } else {
+    localStorage.setItem("flight", flightInput); // set or replace localstorage
     flightSearch(flightInput);
   }
 
-  aviationInput.value = "";
+  aviationInput.value = ""; // clear textarea input
 });
 
-// https://www.addictivetips.com/web/aviationstack-api-review/
+// ---------- OPEN WEATHER API ---------- //
 
-//weather stack//
-
-//button weathersearch function//
-// var APIKey = "dc591a53f8e7a96b2703399147c86ba9";
+// ---------- variables for open weather fetch call ---------- //
 var APIKey = "0c390c97a57230e6547b396d84ff33a8";
 let dailyWeather;
 
+// ---------- DEFINE WEATHER DISPLAY FUNCTION TO PRINT DATA TO PAGE ---------- //
 function weatherDisplay() {
   for (i = 0; i < 5; i++) {
     const dw = dailyWeather[i];
-    //icon?//
     const DailyEl = document.createElement("div");
     var date = new Date(dw.dt * 1000).toLocaleDateString();
     var temp = Math.round(dw.temp.day) + " °F";
@@ -168,11 +170,10 @@ function weatherDisplay() {
     var icon = dw.weather[0].icon;
 
 
-        DailyEl.innerHTML = `<strong>${date}</strong> 
-            <img src="https://openweathermap.org/img/wn/${icon}.png">
-            ${temp} </br> ${wind} </br> ${humidity}`;
-    DailyEl.classList =
-      "flex justify-evenly bg-blue-100 text-center rounded p-1 m-2";
+    DailyEl.innerHTML = `<strong>${date}</strong> 
+      <img src="https://openweathermap.org/img/wn/${icon}.png">
+      ${temp} </br> ${wind} </br> ${humidity}`;
+    DailyEl.classList = "flex justify-evenly bg-blue-100 text-center rounded p-1 m-2";
 
     displayWeather.appendChild(DailyEl);
   }
@@ -180,15 +181,13 @@ function weatherDisplay() {
 
 // ---------- WEATHER SEARCH API CALL ---------- //
 function weatherSearch(cityName) {
+
   // format user input to capitalize first letter
   var input = cityName.charAt(0).toUpperCase() + cityName.slice(1);
   weatherHeader.textContent = input;
-  var latLongAPI =
-    "http://api.openweathermap.org/geo/1.0/direct?q=" +
-    cityName +
-    "&appid=" +
-    APIKey;
+  var latLongAPI = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityName + "&appid=" + APIKey;
 
+  // fetch call
   fetch(latLongAPI)
     .then((response) => {
       if (response.status >= 200 && response.status <= 299) {
@@ -208,16 +207,11 @@ function weatherSearch(cityName) {
       console.log(error);
     });
 }
+
+// ---------- FUNCTION FOR LAT/LON API CALL ---------- //
 var allWeatherApi = function (lat, lon) {
-  const weatherAPI =
-    "https://api.openweathermap.org/data/2.5/onecall?lat=" +
-    lat +
-    "&lon=" +
-    lon +
-    "&exclude=minutely,hourly&appid=" +
-    APIKey +
-    "&units=imperial";
-//   console.log(data);
+  const weatherAPI = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=minutely,hourly&appid=" + APIKey + "&units=imperial";
+  
   fetch(weatherAPI).then(function (response) {
     if (response.ok) {
       response.json().then(function (data) {
@@ -232,10 +226,13 @@ var allWeatherApi = function (lat, lon) {
 // event listener for weather form
 weatherForm.addEventListener("submit", function(event){
     event.preventDefault();
+
+    // reset form header if necessary
     let formEl = document.getElementById("weather-header");
     formEl.classList = "text-xl text-center";
     formEl.textContent = "Enter Your Destination City";
-  displayWeather.innerHTML = "";
+
+    displayWeather.innerHTML = "";
 
     var cityName = weatherInput.value
     localStorage.setItem("city", cityName);
@@ -243,14 +240,17 @@ weatherForm.addEventListener("submit", function(event){
 
     weatherInput.value = ""; // clear textarea
 });
+
 //When the flightData returns empty.
 //This the result of a bad entry in the aviation text field
 
+// ---------- INVALID ENTRY FUNCTIONS ---------- //
 var invalidAvEntry = function () {
   let formEl = document.getElementById("aviation-header");
   formEl.classList = "bg-red-200 text-2xl text-center";
   formEl.textContent = "Please Enter a Valid Fight Number!!";
 };
+
 var invalidWeatherEntry = function () {
   // console.log(error);
   let formEl = document.getElementById("weather-header");
@@ -267,17 +267,13 @@ var checkLocalStorage = function() {
 
     // if lsWeather exists, run the weatherSearch function & pass through value
     if (lsWeather) {
-        weatherSearch(lsWeather);
-    } else {
-        console.log("city not in localstorage");
+      weatherSearch(lsWeather);
     }
 
     // if lsFlight exists, run the flightSearch function & pass through value
     if (lsFlight) {
-        flightList.innerHTML = "";
-        flightSearch(lsFlight);
-    } else {
-        console.log("flight not in localstorage")
+      flightList.innerHTML = "";
+      flightSearch(lsFlight);
     }
 };
 
