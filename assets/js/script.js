@@ -9,8 +9,8 @@ var weatherBtn = document.querySelector("#weather-button");
 var weatherForm = document.querySelector("#weather-form");
 var weatherInput = document.querySelector("#city");
 var displayWeather = document.getElementById("display");
-var airportHeader = document.querySelector("#airport-header");
 
+var airportHeader = document.querySelector("#airport-header");
 var aviationForm = document.querySelector("#aviation-form");
 var aviationInput = document.querySelector("#aviation-input");
 var flightList = document.querySelector("#flight-list");
@@ -38,6 +38,14 @@ var flightSearch = function (flightInput) {
         var airport = flightData.departure.airport;
         var terminal = flightData.departure.terminal;
         var gate = flightData.departure.gate;
+
+        // get and format scheduled and estimated times of departure
+        var scheduledData = new Date(flightData.departure.scheduled); 
+        var scheduled = scheduledData.getUTCHours() + ":" + scheduledData.getUTCMinutes();
+        var delay = flightData.departure.delay;
+        var estimatedData = new Date(flightData.departure.estimated);
+        var estimated = estimatedData.getUTCHours() + ":" + estimatedData.getUTCMinutes();
+
       } else {
       invalidAvEntry();
       }
@@ -56,13 +64,18 @@ var flightSearch = function (flightInput) {
         data: airport,
       };
 
+      var scheduledObj = {
+        title: "Scheduled Departure: ",
+        data: scheduled
+      }
+
       var gateObj = {
         title: "Gate # ",
         data: gate,
       };
 
-      flightDataArr = [];
-      flightDataArr.push(airportObj);
+      flightDataArr = []; // reset flightData to empty array
+      flightDataArr.push(airportObj, scheduledObj);
 
       // check if terminal data exists
       if (terminal !== null) {
@@ -71,19 +84,47 @@ var flightSearch = function (flightInput) {
           data: terminal,
         };
         flightDataArr.push(terminalObj);
-      } else {
-        console.log("no terminal");
       }
 
       flightDataArr.push(gateObj, statusObj);
-    })
     
+    // check for flight delays
+    if (delay > 0) {
+
+      // if there is a delay, package delay and estimated departure data
+      var delayObj = {
+          title: "Delayed: ",
+          data: delay + " minutes"
+      }    
+
+      var estimatedObj = {
+          title: "Estimated Departure: ",
+          data: estimated
+      }
+
+      // push to new array for different formatting
+      flightAlertArr.push(delayObj, estimatedObj);
+    }
+  })
+
+
+    // ---------- POPULATE PAGE WITH FLIGHT DATA ---------- //
     .then(function () {
+
+      // for loop for basic flight data
       for (var d of flightDataArr) {
         console.log(d);
         var flightLi = document.createElement("li");
         flightLi.innerHTML =
           "<li>" + d.title + "<span>" + d.data + "</span></li>";
+        flightList.appendChild(flightLi);
+      }
+
+      // for of loop for alert flight data
+      for (var d of flightAlertArr){
+        var flightLi = document.createElement("li");
+        flightLi.innerHTML = "<li>" + d.title + "<span>" + d.data + "</span></li>";
+        flightLi.classList = "bg-red-500 text-white p-1";
         flightList.appendChild(flightLi);
       }
     });
