@@ -13,11 +13,11 @@
         <h1 class="mb-3 p-5">Flight Status Checker</h1>
     </header>
 
-    <main class="p-4 m-2 flex columns-2">
+    <main class="p-4 m-2 flex flex-col md:flex-row md:columns-2">
         <!-- flight tracking container -->
-        <div class="flex-column flex-col w-full border-2 mx-2">
-            <form id="aviation-form">
-                <h2 class="text-xl text-center">Enter Your Flight Number</h2>
+        <div class="flex flex-col w-full">
+            <form id="aviation-form" class="mx-2">
+                <h2 class="text-xl text-center p-2 mb-2" id="aviation-header">Enter Your Flight Number</h2>
                 <textarea id="aviation-input" placeholder="UA1234" 
                 class="
                 form-control
@@ -44,8 +44,9 @@
                 <div id="flight-info" class="flex relative rounded overflow-hidden shadow-lg">
                     <img class="w-full h-full justify-self-auto" src="./assets/images/taylor-van-riper-yQorCngxzwI-unsplash.jpg" alt="blue sky with clouds" style="height: 494px"/>
                     
-                    <div class="absolute rounded justify-self-auto w-11/12 py-2.5 top-20 inset-x-3 bg-blue-100 text-black text-center border-2 border-black leading-4">
-                        <h3 id="flight-header" class="text-center text-lg">Your Flight Departure Info</h3>
+                    <div id="flight-populated" class="absolute rounded justify-self-auto w-11/12 py-2.5 top-20 inset-x-3 bg-blue-100 text-black text-center border-2 border-black leading-4">
+                        <h3 id="airport-header" class="text-center text-xl mt-2" style="color:rgb(25, 24, 24);"></h3>
+                        <h4 id="flight-header" class="text-center text-lg">Your Flight Departure Info</h4>
                         <ul id="flight-list" class="px-6 py-4">
                             <li>Status</li>
                             <li>Airport</li>
@@ -74,9 +75,9 @@
         </div>
 
         <!-- weather api -->
-        <div class="w-full border-2">
+        <div class="w-full">
             <form id="weather-form" class="flex-column flex-col">
-                <h2 class="text-xl text-center">Enter Your Destination City</h2>
+                <h2 class="text-xl text-center p-2 mb-2" id="weather-header">Enter Your Destination City</h2>
                 <textarea id="city" placeholder="Minneapolis"
                 class="
                 form-control
@@ -98,7 +99,7 @@
                 ></textarea>
                 <button id="weather-button" class="w-full rounded bg-sky-500 text-white">Check The Weather</button>
             </form>
-            <div class="bg-gradient-to-r from-sky-500 via-yellow-100 to-yellow-400 p-2 mt-9 mx-3 mb-3 rounded">
+            <div class="bg-gradient-to-r from-sky-500 via-yellow-100 to-yellow-400 p-2 mt-9 mx-3 mb-3 rounded" style="height: 494px">
                 <h3 id="city-name" class="text-center text-xl mt-2"></h3>
                 <!-- API data goes here -->
                 <div id="display"></div>
@@ -108,9 +109,9 @@
 
     </main>
     
-    <footer>
-        <p>&copy Created by team 6</p>
+    <footer class="p-4">
+        <p>&copy Created by Team 6</p>
     </footer>
-    <script src="./assets/js/script.js"></script>
+    <!-- <script src="./assets/js/script.js"></script> -->
 </body>
 </html>
