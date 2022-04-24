@@ -6,19 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" src="./assets/css/style.css">
-    <title>Flight Status Checker</title>
+    <title>Trip Consultant</title>
 </head>
-<body class="border-2">
-    <header class="text-center text-2xl bg-gradient-to-r from-sky-500 via-blue-100 to-yellow-100">
-        <h1 class="mb-3 p-5">Flight Status Checker</h1>
+<body class="border-2 bg-blue-100">
+    <header class="text-center text-5xl bg-gradient-to-r from-sky-500 via-yellow-100 to-yellow-400">
+        <h1 class="mb-3 p-5">Trip Consultant</h1>
     </header>
 
     <main class="p-4 m-2 flex flex-col md:flex-row md:columns-2">
         <!-- flight tracking container -->
         <div class="flex flex-col w-full">
             <form id="aviation-form" class="mx-2">
-                <h2 class="text-xl text-center p-2 mb-2" id="aviation-header">Enter Your Flight Number</h2>
-                <textarea id="aviation-input" placeholder="UA1234" 
+                <h2 class="text-2xl text-center p-2 mb-2" id="aviation-header">Enter Your Flight Number</h2>
+                <textarea id="aviation-input" placeholder="i.e. UA1234" 
                 class="
                 form-control
                 block
@@ -77,8 +77,8 @@
         <!-- weather api -->
         <div class="w-full">
             <form id="weather-form" class="flex-column flex-col">
-                <h2 class="text-xl text-center p-2 mb-2" id="weather-header">Enter Your Destination City</h2>
-                <textarea id="city" placeholder="Minneapolis"
+                <h2 class="text-2xl text-center p-2 mb-2" id="weather-header">Enter Your Destination City</h2>
+                <textarea id="city" placeholder="i.e. Minneapolis"
                 class="
                 form-control
                 block
