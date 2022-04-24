@@ -186,7 +186,7 @@ function weatherSearch(cityName) {
   // format user input to capitalize first letter
   var input = cityName.charAt(0).toUpperCase() + cityName.slice(1);
   weatherHeader.textContent = input;
-  var latLongAPI = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityName + "&appid=" + APIKey;
+  var latLongAPI = "https://api.openweathermap.org/geo/1.0/direct?q=" + cityName + "&appid=" + APIKey;
 
   // fetch call
   fetch(latLongAPI)
