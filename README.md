@@ -2,9 +2,10 @@
 Live deployment can be found here: (https://emmazart.github.io/bootcamp-project-1/)
 
 ## DISCLAIMER  
-Deployment through Github Pages does not allow for unsecure fetch calls.  
-Since AviationStack API does not include secure calls, demo may not work as intended.  
-Otherwise the OpenWeather API should work as intended.  
+Deployment through Github Pages does not allow for non-secure fetch calls.  
+Since AviationStack API does not include secure calls in their free plan, the application will not run as designed via deployement link. OpenWeather API, however, should work as intended.  
+
+Application is fully functional when deployed locally with open in live server or open in broswer in VS Code. 
 
 ## Purpose
 To help travelers in a one-stop website that allows them to retrieve flight and weather information without having to open multiple websites.
@@ -39,8 +40,7 @@ Wireframe link to google slides: [(Link to Wireframe on Google Slides)](https://
 
 Link to presentation slides: [(Link to presentation on Google Slides)](https://docs.google.com/presentation/d/1iw_IPSBYyfutI1B5fmgr97M3SjQq3zDcdzg-4bzkJOk/edit?usp=sharing)
 
-
-### Tuesday 4/12
+### Tuesday 4/12 Notes
 - Decided on APIs 1 & 2 listed below and on the structure for the webpage (shown in wireframe above).
 - Set up some issues on github, 1-4 should be finished by class on Wednesday. If you are going to work on an issue, please assign yourself in github & let the group know on Slack
 - There is a main & a develop branch - please create feature/FEATURE_NAME branches off of develop as needed
