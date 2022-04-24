@@ -13,12 +13,12 @@ To help travelers in a one-stop website that allows them to retrieve flight and 
 ## This application is developed to:  
 1. Allow the user to search for flight information by flight number  
 2. Present the user with Status, Airport, Terminal, and Gate information  
-![flight](./assets/images/flightSearch.PNG)  
+![flight](./assets/images/flightSearch.png)  
 
 3. Allow the user to search for weather information by city  
 4. Present the user with 5 days worth of forecast  
 5. Forecast contains Temperature, Weather Icon, Wind Speed, and Humdity  
-![weather](./assets/images/weatherSearch.PNG)  
+![weather](./assets/images/weatherSearch.png)  
   
 6. The most recent searches are saved and displayed when the application is next opened
 
